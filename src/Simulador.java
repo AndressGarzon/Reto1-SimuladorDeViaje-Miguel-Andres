@@ -1,15 +1,17 @@
 import java.util.Scanner;
 
 public class Simulador {
-    String[] plantetas = { "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Urano", "Neptuno" };
-    double[] distancias = {};
+    static Scanner scanner = new Scanner(System.in);
+    static String[] plantetas = { "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Urano", "Neptuno" };
+    static long[] distancias = {};
+    static String[] naves = {"Stellar Voyager", "Iron Condor", "Galactic Horizon", "Shadow Phantom", "Celestial Ark"};
+    static String naveSeleccionada;
 
     public static void main(String[] args) {
         muestraMenu();
     }
 
     static void muestraMenu() {
-        Scanner scanner = new Scanner(System.in);
         int opcion;
 
         System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
@@ -38,7 +40,6 @@ public class Simulador {
                 muestraMenu();
                 break;
         }
-        scanner.close();
 
     }
 
@@ -47,7 +48,40 @@ public class Simulador {
     }
 
     static void seleccionarNave() {
-        System.out.println("Seleccionar nave");
+        var seleccionNave = 0;
+
+        System.out.println("Seleccione una nave espacial");
+        for(int i = 0 ; i < naves.length; i++)
+        {
+            System.out.println(i+1 + ". " + naves[i]);
+        }
+
+        seleccionNave = scanner.nextInt();
+
+        switch(seleccionNave)
+        {
+            case 1:
+            naveSeleccionada = naves[0];
+            System.out.println("Ha seleccionado " + naveSeleccionada);
+            break;
+            case 2:
+            naveSeleccionada = naves[1];
+            System.out.println("Ha seleccionado " + naveSeleccionada);
+            break;
+            case 3:
+            naveSeleccionada = naves[2];
+            System.out.println("Ha seleccionado " + naveSeleccionada);
+            case 4:
+            naveSeleccionada = naves[3];
+            System.out.println("Ha seleccionado " + naveSeleccionada);
+            break;
+            case 5:
+            naveSeleccionada = naves[4];
+            System.out.println("Ha seleccionado " + naveSeleccionada);
+            break;
+
+        }
+
     }
 
     static void simulacionDeViaje() {
