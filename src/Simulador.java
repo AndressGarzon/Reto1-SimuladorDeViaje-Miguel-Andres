@@ -14,10 +14,9 @@ public class Simulador {
 
         System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
         System.out.println("1. Seleccionar un planeta de destino.");
-        System.out.println("2. Calcular distancia y tiempo de viaje");
-        System.out.println("3. Gestionar recursos de la nave");
-        System.out.println("4. Monitorear estado del viaje");
-        System.out.println("5. Salir del programa");
+        System.out.println("2. Seleccionar nave espacial");
+        System.out.println("3. Iniciar simulación de viaje");
+        System.out.println("4. Salir del programa");
 
         opcion = scanner.nextInt();
 
@@ -26,15 +25,12 @@ public class Simulador {
                 seleccionarPlaneta();
                 break;
             case 2:
-                calcularDistanciaTiempo();
+                seleccionarNave();
                 break;
             case 3:
-                gestionarRecursos();
+                simulacionDeViaje();
                 break;
-            case 4:
-                monitorearEstado();
-                break;
-            case 5: // Salir
+            case 4: // Salir
                 System.out.println("Gracias por visitar");
                 break;
             default:
@@ -50,15 +46,11 @@ public class Simulador {
         System.out.println("Seleccionar planeta");
     }
 
-    static void calcularDistanciaTiempo() {
-        System.out.println("Calcular distancia y tiempo de viaje");
+    static void seleccionarNave() {
+        System.out.println("Seleccionar nave");
     }
 
-    static void gestionarRecursos() {
-        System.out.println("Gestionar Recursos de la nave");
-    }
-
-    static void monitorearEstado() {
-        System.out.println("Monitorear estado del viaje");
+    static void simulacionDeViaje() {
+        System.out.println("Simulación de viaje");
     }
 }
