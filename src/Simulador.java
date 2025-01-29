@@ -7,6 +7,7 @@ public class Simulador {
     static String[] naves = {"Stellar Voyager", "Iron Condor", "Galactic Horizon", "Shadow Phantom", "Celestial Ark"};
     static int naveSeleccionada;
     static int[] cantidadPasajeros = {12, 8, 20, 5, 100};
+    static int cantidadPasajerosSeleccionada;
     static int[] velocidadesMaximas = {20, 30, 50, 60, 80};
 
     public static void main(String[] args) {
@@ -190,6 +191,18 @@ public class Simulador {
     static void cantidadDePasajeros()
     {
         System.out.println("Seleccione la cantidad de pasajeros");
+    }
+
+    //Validación de cantidad de pasajeros dependiendo de la nave seleccionada
+    static boolean validarCantidadDePasajeros(int pasajeros)
+    {
+        if(pasajeros > cantidadPasajeros[naveSeleccionada])
+        {
+            return false;
+        }else{
+
+            return true;
+        }
     }
 
     static void calculoDuracionViaje()
