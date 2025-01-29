@@ -207,6 +207,11 @@ public class Simulador {
     }
 
     //Validación de cantidad de pasajeros dependiendo de la nave seleccionada
+    /**La función valida que la cantidad de pasajeros que viajan sea la correcta, con respecto
+     * a la cantidad de pasajeros que soporta la nave.
+     * @param pasajeros Cantidad de pasajeros que viajan
+     * @return true si la cantidad de pasajeros es permitida por la nave o false en caso contrario
+     */
     static boolean validarCantidadDePasajeros(int pasajeros)
     {
         if(pasajeros > cantidadPasajeros[naveSeleccionada] || pasajeros <= 0)
