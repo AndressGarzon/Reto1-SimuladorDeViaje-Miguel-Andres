@@ -12,9 +12,10 @@ public class Simulador {
     private static void muestraMenu() {
         Scanner scanner = new Scanner(System.in);
         int opcion;
-
+        System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
+        
         do {
-            System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
+            System.out.println("\n-------------Menú-------------------");
             System.out.println("1. Seleccionar un planeta de destino.");
             System.out.println("2. Seleccionar una nave espacial.");
             System.out.println("3. Iniciar la simulación del viaje.");
