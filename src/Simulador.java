@@ -190,13 +190,26 @@ public class Simulador {
 
     static void cantidadDePasajeros()
     {
-        System.out.println("Seleccione la cantidad de pasajeros");
+        System.out.printf("Seleccione la cantidad de pasajeros\ntenga en cuenta que la capacidad de la nave es de %d pasajeros\n", cantidadPasajeros[naveSeleccionada]);
+
+        cantidadPasajerosSeleccionada = scanner.nextInt();
+        if (!validarCantidadDePasajeros(cantidadPasajerosSeleccionada)) {
+            System.out.println("Cantidad de pasajeros no permitida!\n");
+            cantidadDePasajeros();
+        }else{
+            System.out.printf("Cantidad de pasajeros seleccionada %d\n", cantidadPasajerosSeleccionada);
+            gestionNave();
+
+        }
+
+        scanner.nextLine();
+
     }
 
     //Validación de cantidad de pasajeros dependiendo de la nave seleccionada
     static boolean validarCantidadDePasajeros(int pasajeros)
     {
-        if(pasajeros > cantidadPasajeros[naveSeleccionada])
+        if(pasajeros > cantidadPasajeros[naveSeleccionada] || pasajeros <= 0)
         {
             return false;
         }else{
