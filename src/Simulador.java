@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
 public class Simulador {
-    static Scanner scanner = new Scanner(System.in);
+    //Variables globales
     static String[] planetas = { "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Urano", "Neptuno" };
+    static int planetaSeleccionado;
     static double[] distancias = { 77.0, 61.0, 54.6, 778.0, 1300.0, 2723.0, 4351.4, };
     static String[] descripciones = {
             "Mercurio: Es un planeta rocoso, pequeño y denso, que se encuentra en el Sistema Solar. Es el planeta más cercano al Sol y el más pequeño de todos. ",
@@ -25,39 +26,44 @@ public class Simulador {
     }
 
 
-    static void muestraMenu() {
+    private static void muestraMenu() {
+        Scanner scanner = new Scanner(System.in);
         int opcion;
+        System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
+        do {
+            System.out.println("\n-------------Menú-------------------");
+            System.out.println("1. Seleccionar un planeta de destino.");
+            System.out.println("2. Seleccionar una nave espacial.");
+            System.out.println("3. Iniciar la simulación del viaje.");
+            System.out.println("4. Salir del programa.");
+            System.out.print("Ingresa una opción: ");
 
-        System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:\n");
-        System.out.println("1. Seleccionar un planeta de destino.");
-        System.out.println("2. Gestionar nave espacial");
-        System.out.println("3. Iniciar simulación de viaje");
-        System.out.println("4. Salir del programa");
+            opcion = scanner.nextInt();
 
-        opcion = scanner.nextInt();
-
-        switch (opcion) {
-            case 1:
-                seleccionarPlaneta();
-                break;
-            case 2:
-                gestionNave();
-                break;
-            case 3:
-                simulacionDeViaje();
-                break;
-            case 4: // Salir
-                System.out.println("Gracias por visitar");
-                break;
-            default:
-                System.out.println("Opción no válida\n");
-                muestraMenu();
-                break;
-        }
-
+            switch (opcion) {
+                case 1:
+                    seleccionarPlaneta();
+                    break;
+                case 2:
+                    gestionNave();
+                    break;
+                case 3:
+                    iniciarSimulacion();
+                    break;
+                case 4:
+                    scanner.close();
+                    System.out.println("Gracias por visitar.");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Por favor, intenta de nuevo.\n");
+                    break;
+            }
+        } while (opcion != 4);
+        scanner.close();
     }
 
-    private static void seleccionarPlaneta() { // Método para planetas
+    // Método para seleccionar un planeta
+    private static void seleccionarPlaneta() { 
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
 
@@ -79,6 +85,7 @@ public class Simulador {
                     System.out.print("\n¿Deseas continuar con este planeta? (s/n): ");
                     confirmacion = scanner.next();
                     if (confirmacion.equalsIgnoreCase("s")) {
+                        planetaSeleccionado = opcionPlaneta;
                         continuar = false; // Confirma y sale del bucle
                         break;
                     } else if (confirmacion.equalsIgnoreCase("n")) {
@@ -94,14 +101,16 @@ public class Simulador {
         }
     }
 
+    //Método para gestionar la nave
     static void gestionNave() {
+        Scanner scanner = new Scanner(System.in);
         var opcion = 0;
         System.out.println("Bienvenido a las opciones de gestión de la nave");
         System.out.println("Seleccione una opción\n");
         System.out.println("1. Seleccionar nave");
         System.out.println("2. Consultar nave seleccionada");
         System.out.println("3. Seleccionar la cantidad de pasajeros");
-        System.out.println("4. Calcular la duración del viaje");
+        System.out.println("4. Volver al menú principal");
         opcion = scanner.nextInt();
 
         switch (opcion) {
@@ -118,7 +127,7 @@ public class Simulador {
                 break;
 
             case 4:
-                calculoDuracionViaje();
+                muestraMenu();
                 break;
 
             default:
@@ -126,10 +135,13 @@ public class Simulador {
                 gestionNave();
                 break;
         }
+        scanner.close();
 
     }
 
+    //Método para seleccionar la nave
     static void seleccionarNave() {
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Seleccione una nave espacial\n");
         for (int i = 0; i < naves.length; i++) {
@@ -146,9 +158,12 @@ public class Simulador {
             System.out.println("Ha seleccionado una nave no válida!");
             seleccionarNave();
         }
+        scanner.close();
     }
 
+    //Método para consultar la nave seleccionada
     static void consultarNaveSeleccionada() {
+        Scanner scanner = new Scanner(System.in);
         switch (naveSeleccionada) {
             case 0:
                 System.out.println("   _____ __       ____              _    __                                 \r\n" + //
@@ -253,9 +268,12 @@ public class Simulador {
                 gestionNave();
                 break;
         }
+        scanner.close();
     }
 
+    //Método para seleccionar la cantidad de pasajeros
     static void cantidadDePasajeros() {
+        Scanner scanner = new Scanner(System.in);
         System.out.printf(
                 "Seleccione la cantidad de pasajeros\ntenga en cuenta que la capacidad de la nave es de %d pasajeros\n",
                 cantidadPasajeros[naveSeleccionada]);
@@ -277,6 +295,7 @@ public class Simulador {
         }
 
         scanner.nextLine();
+        scanner.close();
 
     }
 
@@ -303,11 +322,8 @@ public class Simulador {
         System.out.println("Calculo duración viaje");
     }
 
-    static void simulacionDeViaje() {
+    static void iniciarSimulacion() {
         System.out.println("Simulación de viaje");
     }
 
-    private static void iniciarSimulacion(){ //Método de simulación
-
-    }
 }
