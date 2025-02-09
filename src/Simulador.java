@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Simulador {
-    //Variables globales
+    // Variables globales
     static String[] planetas = { "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Urano", "Neptuno" };
     static int planetaSeleccionado;
     static double[] distancias = { 77.0, 61.0, 54.6, 778.0, 1300.0, 2723.0, 4351.4, };
@@ -18,13 +18,11 @@ public class Simulador {
     static int naveSeleccionada;
     static int[] cantidadPasajeros = { 12, 8, 20, 5, 100 };
     static int cantidadPasajerosSeleccionada;
-    static int[] velocidadesMaximas = { 20, 30, 50, 60, 80 };
-
+    static int[] velocidadesMaximas = { 2000, 3000, 5000, 6000, 8000 };
 
     public static void main(String[] args) {
         muestraMenu();
     }
-
 
     private static void muestraMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -63,7 +61,7 @@ public class Simulador {
     }
 
     // Método para seleccionar un planeta
-    private static void seleccionarPlaneta() { 
+    private static void seleccionarPlaneta() {
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
 
@@ -101,7 +99,7 @@ public class Simulador {
         }
     }
 
-    //Método para gestionar la nave
+    // Método para gestionar la nave
     static void gestionNave() {
         Scanner scanner = new Scanner(System.in);
         var opcion = 0;
@@ -139,7 +137,7 @@ public class Simulador {
 
     }
 
-    //Método para seleccionar la nave
+    // Método para seleccionar la nave
     static void seleccionarNave() {
         Scanner scanner = new Scanner(System.in);
 
@@ -161,7 +159,7 @@ public class Simulador {
         scanner.close();
     }
 
-    //Método para consultar la nave seleccionada
+    // Método para consultar la nave seleccionada
     static void consultarNaveSeleccionada() {
         Scanner scanner = new Scanner(System.in);
         switch (naveSeleccionada) {
@@ -176,6 +174,7 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[0]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
+                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -196,6 +195,7 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[1]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
+                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -215,6 +215,7 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[2]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
+                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -244,6 +245,7 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[3]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
+                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -262,6 +264,7 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[4]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
+                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -271,7 +274,7 @@ public class Simulador {
         scanner.close();
     }
 
-    //Método para seleccionar la cantidad de pasajeros
+    // Método para seleccionar la cantidad de pasajeros
     static void cantidadDePasajeros() {
         Scanner scanner = new Scanner(System.in);
         System.out.printf(
@@ -318,12 +321,37 @@ public class Simulador {
         }
     }
 
-    static void calculoDuracionViaje() {
-        System.out.println("Calculo duración viaje");
+    static String calculoDuracionViaje() {
+        var distanciaEnMillonesDeKm = distancias[planetaSeleccionado] * Math.pow(10,6);
+        var segundosPorDia = 86400;
+        /*
+         * La fórmula para calcular el tiempo de viaje en segundos es
+         * Distancia * 10 ^ 6 / Velocidad
+         */
+        var tiempoDeViajeEnSegundos = distanciaEnMillonesDeKm / velocidadesMaximas[naveSeleccionada];
+        var tiempoDeViajeEnHoras = Math.round(tiempoDeViajeEnSegundos / 3600);
+        var tiempoDeViajeEnDias = Math.round(tiempoDeViajeEnSegundos / segundosPorDia);
+        return "La duración estimada del viaje es de: "+  tiempoDeViajeEnHoras + " horas " + "("+tiempoDeViajeEnDias + " días)";
+        
     }
 
+    static void informacionCompletaDeViaje()
+    {
+        System.out.println("\n*****- Información general del viaje -*****\n");
+        System.out.printf("Planeta destino: %s\n", planetas[planetaSeleccionado]);
+        System.out.printf("Nave Seleccionada: %s\n", naves[naveSeleccionada]);
+        if(cantidadPasajerosSeleccionada == 0)
+        {
+            System.out.println("Aún no ha seleccionado la cantidad de pasajeros");
+        }else{
+
+            System.out.printf("Cantidad de pasajeros a bordo: %d\n", cantidadPasajerosSeleccionada);
+        }
+        System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n", planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
+        System.out.println(calculoDuracionViaje());
+    }
     static void iniciarSimulacion() {
-        System.out.println("Simulación de viaje");
+        informacionCompletaDeViaje();
     }
 
 }
