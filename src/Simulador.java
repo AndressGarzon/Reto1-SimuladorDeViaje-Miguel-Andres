@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Simulador {
     // Variables globales
     static String[] planetas = { "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Urano", "Neptuno" };
-    static int planetaSeleccionado;
+    static int planetaSeleccionado = -1;
     static double[] distancias = { 77.0, 61.0, 54.6, 778.0, 1300.0, 2723.0, 4351.4, };
     static String[] descripciones = {
             "Mercurio: Es un planeta rocoso, pequeño y denso, que se encuentra en el Sistema Solar. Es el planeta más cercano al Sol y el más pequeño de todos. ",
@@ -15,17 +15,19 @@ public class Simulador {
             "Neptuno: es el último planeta del Sistema Solar y está compuesto por una mezcla de agua, amoniaco y metano. Es un gigante de hielo, frío, oscuro y ventoso."
     };
     static String[] naves = { "Stellar Voyager", "Iron Condor", "Galactic Horizon", "Shadow Phantom", "Celestial Ark" };
-    static int naveSeleccionada;
+    static int naveSeleccionada = -1;
     static int[] cantidadPasajeros = { 12, 8, 20, 5, 100 };
     static int cantidadPasajerosSeleccionada;
     static int[] velocidadesMaximas = { 2000, 3000, 5000, 6000, 8000 };
 
+    
     public static void main(String[] args) {
-        muestraMenu();
+        Scanner scanner = new Scanner(System.in);
+        muestraMenu(scanner);
+        scanner.close();
     }
 
-    private static void muestraMenu() {
-        Scanner scanner = new Scanner(System.in);
+    private static void muestraMenu(Scanner scanner) {
         int opcion;
         System.out.println("Bienvenido a este viaje interplanetario. Elige tu próxima travesía:");
         do {
@@ -37,32 +39,29 @@ public class Simulador {
             System.out.print("Ingresa una opción: ");
 
             opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpia el buffer de entrada
 
             switch (opcion) {
                 case 1:
-                    seleccionarPlaneta();
+                    seleccionarPlaneta(scanner);
                     break;
                 case 2:
-                    gestionNave();
+                    gestionNave(scanner);
                     break;
                 case 3:
                     iniciarSimulacion();
                     break;
                 case 4:
-                    scanner.close();
                     System.out.println("Gracias por visitar.");
-                    break;
+                    return;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.\n");
                     break;
             }
-        } while (opcion != 4);
-        scanner.close();
-    }
+        } while (opcion != 4);}
 
     // Método para seleccionar un planeta
-    private static void seleccionarPlaneta() {
-        Scanner scanner = new Scanner(System.in);
+    private static void seleccionarPlaneta(Scanner scanner) {
         boolean continuar = true;
 
         while (continuar) {
@@ -72,6 +71,7 @@ public class Simulador {
             }
             System.out.print("Ingresa el número del planeta al que quieres visitar: ");
             int opcionPlaneta = scanner.nextInt() - 1;
+            scanner.nextLine();
 
             if (opcionPlaneta >= 0 && opcionPlaneta < planetas.length) {
                 System.out.println("\nHas seleccionado " + planetas[opcionPlaneta]);
@@ -81,7 +81,7 @@ public class Simulador {
                 String confirmacion = "";
                 while (true) {
                     System.out.print("\n¿Deseas continuar con este planeta? (s/n): ");
-                    confirmacion = scanner.next();
+                    confirmacion = scanner.nextLine();
                     if (confirmacion.equalsIgnoreCase("s")) {
                         planetaSeleccionado = opcionPlaneta;
                         continuar = false; // Confirma y sale del bucle
@@ -100,20 +100,20 @@ public class Simulador {
     }
 
     // Método para gestionar la nave
-    static void gestionNave() {
-        Scanner scanner = new Scanner(System.in);
+    static void gestionNave(Scanner scanner) {
         var opcion = 0;
-        System.out.println("Bienvenido a las opciones de gestión de la nave");
+        System.out.println("\n----Bienvenido a las opciones de gestión de la nave----");
         System.out.println("Seleccione una opción\n");
         System.out.println("1. Seleccionar nave");
         System.out.println("2. Consultar nave seleccionada");
         System.out.println("3. Seleccionar la cantidad de pasajeros");
         System.out.println("4. Volver al menú principal");
         opcion = scanner.nextInt();
+        scanner.nextLine();
 
         switch (opcion) {
             case 1:
-                seleccionarNave();
+                seleccionarNave(scanner);
                 break;
 
             case 2:
@@ -125,21 +125,18 @@ public class Simulador {
                 break;
 
             case 4:
-                muestraMenu();
-                break;
+                return;
 
             default:
                 System.out.println("Opción no válida");
-                gestionNave();
+                gestionNave(scanner);
                 break;
         }
-        scanner.close();
 
     }
 
     // Método para seleccionar la nave
-    static void seleccionarNave() {
-        Scanner scanner = new Scanner(System.in);
+    static void seleccionarNave(Scanner scanner) {
 
         System.out.println("Seleccione una nave espacial\n");
         for (int i = 0; i < naves.length; i++) {
@@ -147,21 +144,30 @@ public class Simulador {
         }
 
         naveSeleccionada = scanner.nextInt() - 1;
+        scanner.nextLine();
 
         if (naveSeleccionada >= 0 && naveSeleccionada <= 4) {
 
             System.out.printf("Ha seleccionado %s\n\n", naves[naveSeleccionada]);
-            gestionNave();
+            gestionNave(scanner);
         } else {
             System.out.println("Ha seleccionado una nave no válida!");
-            seleccionarNave();
+            seleccionarNave(scanner);
         }
-        scanner.close();
+
     }
 
     // Método para consultar la nave seleccionada
     static void consultarNaveSeleccionada() {
         Scanner scanner = new Scanner(System.in);
+        if (naveSeleccionada == -1) {
+        System.out.println("No has seleccionado ninguna nave aún. Por favor, selecciona una nave primero.");
+        scanner.nextLine();
+        System.out.println("Presiona una tecla para continuar...");
+        scanner.nextLine();
+        gestionNave(scanner);
+        return;
+    }
         switch (naveSeleccionada) {
             case 0:
                 System.out.println("   _____ __       ____              _    __                                 \r\n" + //
@@ -178,7 +184,7 @@ public class Simulador {
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
-                gestionNave();
+                gestionNave(scanner);
                 break;
 
             case 1:
@@ -199,7 +205,7 @@ public class Simulador {
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
-                gestionNave();
+                gestionNave(scanner);
                 break;
 
             case 2:
@@ -219,7 +225,7 @@ public class Simulador {
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
-                gestionNave();
+                gestionNave(scanner);
                 break;
 
             case 3:
@@ -249,7 +255,7 @@ public class Simulador {
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
-                gestionNave();
+                gestionNave(scanner);
                 break;
 
             case 4:
@@ -268,38 +274,39 @@ public class Simulador {
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
-                gestionNave();
+                gestionNave(scanner);
                 break;
         }
-        scanner.close();
     }
 
     // Método para seleccionar la cantidad de pasajeros
     static void cantidadDePasajeros() {
         Scanner scanner = new Scanner(System.in);
+        if (naveSeleccionada == -1) {
+            System.out.println("No has seleccionado una nave aún. Por favor, selecciona una nave primero.");
+            System.out.println("Presiona una tecla para continuar...");
+            scanner.nextLine();
+            gestionNave(scanner);
+            return;
+        }
         System.out.printf(
                 "Seleccione la cantidad de pasajeros\ntenga en cuenta que la capacidad de la nave es de %d pasajeros\n",
                 cantidadPasajeros[naveSeleccionada]);
-
         cantidadPasajerosSeleccionada = scanner.nextInt();
+        scanner.nextLine();
+
         if (!validarCantidadDePasajeros(cantidadPasajerosSeleccionada)) {
             System.out.println("Cantidad de pasajeros no permitida!\n");
-            scanner.nextLine();
             System.out.println("Presiona una tecla para continuar...");
             scanner.nextLine();
             cantidadDePasajeros();
         } else {
             System.out.printf("Cantidad de pasajeros seleccionada %d\n", cantidadPasajerosSeleccionada);
-            scanner.nextLine();
             System.out.println("Presiona una tecla para continuar...");
             scanner.nextLine();
-            gestionNave();
+            gestionNave(scanner);
 
         }
-
-        scanner.nextLine();
-        scanner.close();
-
     }
 
     // Validación de cantidad de pasajeros dependiendo de la nave seleccionada
@@ -340,18 +347,24 @@ public class Simulador {
         System.out.println("\n*****- Información general del viaje -*****\n");
         System.out.printf("Planeta destino: %s\n", planetas[planetaSeleccionado]);
         System.out.printf("Nave Seleccionada: %s\n", naves[naveSeleccionada]);
-        if(cantidadPasajerosSeleccionada == 0)
-        {
-            System.out.println("Aún no ha seleccionado la cantidad de pasajeros");
-        }else{
-
-            System.out.printf("Cantidad de pasajeros a bordo: %d\n", cantidadPasajerosSeleccionada);
-        }
+        System.out.printf("Cantidad de pasajeros a bordo: %d\n", cantidadPasajerosSeleccionada);
         System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n", planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
         System.out.println(calculoDuracionViaje());
     }
+
+
     static void iniciarSimulacion() {
-        informacionCompletaDeViaje();
+        if (planetaSeleccionado == -1 && naveSeleccionada == -1) {
+            System.out.println("No has seleccionado un planeta ni una nave. Selecciónalos antes de iniciar la simulación.");
+        } else if (planetaSeleccionado == -1) {
+            System.out.println("No has seleccionado un planeta. Selecciónalo antes de iniciar la simulación.");
+        } else if (naveSeleccionada == -1) {
+            System.out.println("No has seleccionado una nave. Selecciónala antes de iniciar la simulación.");
+        } else if (cantidadPasajerosSeleccionada <= 0) {
+            System.out.println("No has seleccionado la cantidad de pasajeros. Selecciónalos antes de iniciar la simulación.");
+        } else {
+            informacionCompletaDeViaje();
+        }
     }
 
 }
