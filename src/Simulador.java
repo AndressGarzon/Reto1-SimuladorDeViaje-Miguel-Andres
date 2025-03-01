@@ -53,7 +53,7 @@ public class Simulador {
                     break;
                 case 4:
                     System.out.println("Gracias por visitar.");
-                    return;
+                    break;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.\n");
                     break;
@@ -125,7 +125,7 @@ public class Simulador {
                 break;
 
             case 4:
-                return;
+                muestraMenu(scanner);;
 
             default:
                 System.out.println("Opción no válida");
@@ -166,7 +166,6 @@ public class Simulador {
         System.out.println("Presiona una tecla para continuar...");
         scanner.nextLine();
         gestionNave(scanner);
-        return;
     }
         switch (naveSeleccionada) {
             case 0:
@@ -201,7 +200,6 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[1]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
-                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -221,7 +219,6 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[2]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
-                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -251,7 +248,6 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[3]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
-                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -270,7 +266,6 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[4]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
-                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -287,7 +282,6 @@ public class Simulador {
             System.out.println("Presiona una tecla para continuar...");
             scanner.nextLine();
             gestionNave(scanner);
-            return;
         }
         System.out.printf(
                 "Seleccione la cantidad de pasajeros\ntenga en cuenta que la capacidad de la nave es de %d pasajeros\n",
