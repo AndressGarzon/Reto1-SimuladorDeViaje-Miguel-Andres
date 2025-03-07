@@ -17,6 +17,8 @@ public class Simulador {
     static String[] naves = { "Stellar Voyager", "Iron Condor", "Galactic Horizon", "Shadow Phantom", "Celestial Ark" };
     static int naveSeleccionada = -1;
     static int[] cantidadPasajeros = { 12, 8, 20, 5, 100 };
+    static int cantidadTanquesOxigeno = 0;
+    static int cantidadTanquesCombustible = 0;
     static int cantidadPasajerosSeleccionada;
     static int[] velocidadesMaximas = { 2000, 3000, 5000, 6000, 8000 };
 
@@ -34,8 +36,9 @@ public class Simulador {
             System.out.println("\n-------------Menú-------------------");
             System.out.println("1. Seleccionar un planeta de destino.");
             System.out.println("2. Seleccionar una nave espacial.");
-            System.out.println("3. Iniciar la simulación del viaje.");
-            System.out.println("4. Salir del programa.");
+            System.out.println("3. Gestionar los recursos para el viaje.");
+            System.out.println("4. Iniciar la simulación del viaje.");
+            System.out.println("5. Salir del programa.");
             System.out.print("Ingresa una opción: ");
 
             opcion = scanner.nextInt();
@@ -47,18 +50,21 @@ public class Simulador {
                     break;
                 case 2:
                     gestionNave(scanner);
-                    break;
+                    break;          
                 case 3:
-                    iniciarSimulacion();
+                    gestionarRecursos(scanner);
                     break;
                 case 4:
-                    System.out.println("Gracias por visitar.");
+                    iniciarSimulacion();
+                    break;
+                case 5:
+                    System.out.println("Gracias por visitar!");
                     break;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.\n");
-                    break;
+                    muestraMenu(scanner);
             }
-        } while (opcion != 4);}
+        } while (opcion != 5);}
 
     // Método para seleccionar un planeta
     private static void seleccionarPlaneta(Scanner scanner) {
@@ -85,6 +91,7 @@ public class Simulador {
                     if (confirmacion.equalsIgnoreCase("s")) {
                         planetaSeleccionado = opcionPlaneta;
                         continuar = false; // Confirma y sale del bucle
+                        seleccionarNave(scanner);
                         break;
                     } else if (confirmacion.equalsIgnoreCase("n")) {
                         System.out.println("Puedes elegir otro planeta.");
@@ -125,7 +132,7 @@ public class Simulador {
                 break;
 
             case 4:
-                muestraMenu(scanner);;
+                muestraMenu(scanner);
 
             default:
                 System.out.println("Opción no válida");
@@ -138,7 +145,7 @@ public class Simulador {
     // Método para seleccionar la nave
     static void seleccionarNave(Scanner scanner) {
 
-        System.out.println("Seleccione una nave espacial\n");
+        System.out.println("\n>>>Seleccione una nave espacial<<<\n");
         for (int i = 0; i < naves.length; i++) {
             System.out.printf("%d. %s\n", i + 1, naves[i]);
         }
@@ -148,8 +155,8 @@ public class Simulador {
 
         if (naveSeleccionada >= 0 && naveSeleccionada <= 4) {
 
-            System.out.printf("Ha seleccionado %s\n\n", naves[naveSeleccionada]);
-            gestionNave(scanner);
+            System.out.printf("\nHa seleccionado %s\n\n", naves[naveSeleccionada]);
+            cantidadDePasajeros();
         } else {
             System.out.println("Ha seleccionado una nave no válida!");
             seleccionarNave(scanner);
@@ -179,7 +186,6 @@ public class Simulador {
                 System.out.printf("Velocidad %d km/s\n", velocidadesMaximas[0]);
                 System.out.printf("Cantidad de pasajeros actual: %d - restantes: %d\n", cantidadPasajerosSeleccionada,
                         cantidadPasajeros[naveSeleccionada] - cantidadPasajerosSeleccionada);
-                        calculoDuracionViaje();
                 scanner.nextLine();
                 System.out.println("Presiona una tecla para continuar...");
                 scanner.nextLine();
@@ -284,7 +290,7 @@ public class Simulador {
             gestionNave(scanner);
         }
         System.out.printf(
-                "Seleccione la cantidad de pasajeros\ntenga en cuenta que la capacidad de la nave es de %d pasajeros\n",
+                "Seleccione la cantidad de pasajeros\n\nTenga en cuenta que la capacidad de la nave es de (%d) pasajeros\n",
                 cantidadPasajeros[naveSeleccionada]);
         cantidadPasajerosSeleccionada = scanner.nextInt();
         scanner.nextLine();
@@ -296,9 +302,9 @@ public class Simulador {
             cantidadDePasajeros();
         } else {
             System.out.printf("Cantidad de pasajeros seleccionada %d\n", cantidadPasajerosSeleccionada);
-            System.out.println("Presiona una tecla para continuar...");
+            System.out.println("\nPresiona una tecla para continuar...");
             scanner.nextLine();
-            gestionNave(scanner);
+            gestionarOxigeno(scanner);
 
         }
     }
@@ -322,6 +328,8 @@ public class Simulador {
         }
     }
 
+
+    //Función para calcular la duración del viaje
     static String calculoDuracionViaje() {
         var distanciaEnMillonesDeKm = distancias[planetaSeleccionado] * Math.pow(10,6);
         var segundosPorDia = 86400;
@@ -336,17 +344,103 @@ public class Simulador {
         
     }
 
+    //Función para mostrar la información completa del viaje
     static void informacionCompletaDeViaje()
     {
         System.out.println("\n*****- Información general del viaje -*****\n");
         System.out.printf("Planeta destino: %s\n", planetas[planetaSeleccionado]);
         System.out.printf("Nave Seleccionada: %s\n", naves[naveSeleccionada]);
+        System.out.println(cantidadTanquesOxigeno > 1 ? "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanques": "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanque");
+        System.out.println(cantidadTanquesCombustible > 1 ? "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanques": "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanque");
         System.out.printf("Cantidad de pasajeros a bordo: %d\n", cantidadPasajerosSeleccionada);
         System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n", planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
         System.out.println(calculoDuracionViaje());
     }
 
 
+    //Función que muestra el menú para gestionar los recursos
+    static void gestionarRecursos(Scanner scanner){
+        System.out.println("Seleccione el recurso a gestionar:\n");
+        System.out.println("1. Oxígeno");
+        System.out.println("2. Combustible");
+        System.out.println("3. Volver al menú principal");
+        int opcion = 0;
+        opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                gestionarOxigeno(scanner);
+
+            case 2:
+                gestionarCombustible(scanner);
+            
+            case 3:
+                muestraMenu(scanner);
+        
+            default:
+                System.out.println("No has seleccionado una opción válida, vuelve a intentarlo!");
+                gestionarRecursos(scanner);
+                break;
+        }
+    }
+
+    //Función que muestra el menú para gestionar el oxígeno
+    static void gestionarOxigeno(Scanner scanner){
+        System.out.println("**- Gestionar Oxígeno -**\n");
+        System.out.println("Seleccione la cantidad de oxígeno que llevará para este viaje\n");
+        System.out.println("1. 1 Tanque");
+        System.out.println("2. 2 Tanques");
+        System.out.println("3. 4 Tanques");
+
+        cantidadTanquesOxigeno = scanner.nextInt();
+
+        switch (cantidadTanquesOxigeno) {
+            case 1:
+                System.out.println("Has seleccionado: " + cantidadTanquesOxigeno + " tanque de oxígeno\n");
+                gestionarCombustible(scanner);
+            case 2:
+                System.out.println("Has seleccionado: " + cantidadTanquesOxigeno + " tanques de oxígeno\n");
+                gestionarCombustible(scanner);
+            case 3:
+                System.out.println("Has seleccionado: " + cantidadTanquesOxigeno + " tanques de oxígeno\n");
+                gestionarCombustible(scanner);
+            default:
+                System.out.println("Opción no válida!");
+                gestionarRecursos(scanner);
+                break;
+        }
+
+
+    }
+
+        //Función que muestra el menú para gestionar el combustible
+    static void gestionarCombustible(Scanner scanner){
+        System.out.println("**- Gestionar Combustible -**\n");
+        System.out.println("Seleccione la cantidad de combustible que llevará para este viaje");
+        System.out.println("1. 1 Tanque");
+        System.out.println("2. 2 Tanques");
+        System.out.println("3. 4 Tanques");
+
+        cantidadTanquesCombustible = scanner.nextInt();
+
+        switch (cantidadTanquesCombustible) {
+            case 1:
+                System.out.println("Has seleccionado: " + cantidadTanquesCombustible + " tanque de combustible\n");
+                muestraMenu(scanner);
+            case 2:
+                System.out.println("Has seleccionado: " + cantidadTanquesCombustible + " tanques de combustible\n");
+                muestraMenu(scanner);
+            case 3:
+                System.out.println("Has seleccionado: " + cantidadTanquesCombustible + " tanques de combustible\n");
+                muestraMenu(scanner);
+            default:
+                System.out.println("Opción no válida!");
+                gestionarRecursos(scanner);
+                break;
+        }
+    }
+
+    //Función que valída que los recursos se hayan seleccionado y inicia la simulación
     static void iniciarSimulacion() {
         if (planetaSeleccionado == -1 && naveSeleccionada == -1) {
             System.out.println("No has seleccionado un planeta ni una nave. Selecciónalos antes de iniciar la simulación.");
@@ -356,7 +450,14 @@ public class Simulador {
             System.out.println("No has seleccionado una nave. Selecciónala antes de iniciar la simulación.");
         } else if (cantidadPasajerosSeleccionada <= 0) {
             System.out.println("No has seleccionado la cantidad de pasajeros. Selecciónalos antes de iniciar la simulación.");
-        } else {
+        }else if (cantidadTanquesOxigeno == 0 && cantidadTanquesCombustible == 0){
+            System.out.println("No has seleccionado la cantidad de oxígeno y combustible. Seleccionalos antes de inciar la simulación");
+        }else if(cantidadTanquesOxigeno == 0){
+            System.out.println("No has seleccionado la cantidad de tanques de oxígeno. Seleccionalos antes de inciar la simulación");
+        }else if(cantidadTanquesCombustible == 0){
+            System.out.println("No has seleccionado la cantidad de tanques de combustible. Seleccionalos antes de iniciar la simulación");
+        }
+         else {
             informacionCompletaDeViaje();
         }
     }
