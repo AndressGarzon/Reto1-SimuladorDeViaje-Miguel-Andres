@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Simulador {
@@ -19,10 +20,9 @@ public class Simulador {
     static int[] cantidadPasajeros = { 12, 8, 20, 5, 100 };
     static int cantidadTanquesOxigeno = 0;
     static int cantidadTanquesCombustible = 0;
-    static int cantidadPasajerosSeleccionada;
+    static int cantidadPasajerosSeleccionada = 0;
     static int[] velocidadesMaximas = { 2000, 3000, 5000, 6000, 8000 };
 
-    
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         muestraMenu(scanner);
@@ -50,7 +50,7 @@ public class Simulador {
                     break;
                 case 2:
                     gestionNave(scanner);
-                    break;          
+                    break;
                 case 3:
                     gestionarRecursos(scanner);
                     break;
@@ -64,7 +64,8 @@ public class Simulador {
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.\n");
                     muestraMenu(scanner);
             }
-        } while (opcion != 5);}
+        } while (opcion != 5);
+    }
 
     // Método para seleccionar un planeta
     private static void seleccionarPlaneta(Scanner scanner) {
@@ -168,12 +169,12 @@ public class Simulador {
     static void consultarNaveSeleccionada() {
         Scanner scanner = new Scanner(System.in);
         if (naveSeleccionada == -1) {
-        System.out.println("No has seleccionado ninguna nave aún. Por favor, selecciona una nave primero.");
-        scanner.nextLine();
-        System.out.println("Presiona una tecla para continuar...");
-        scanner.nextLine();
-        gestionNave(scanner);
-    }
+            System.out.println("No has seleccionado ninguna nave aún. Por favor, selecciona una nave primero.");
+            scanner.nextLine();
+            System.out.println("Presiona una tecla para continuar...");
+            scanner.nextLine();
+            gestionNave(scanner);
+        }
         switch (naveSeleccionada) {
             case 0:
                 System.out.println("   _____ __       ____              _    __                                 \r\n" + //
@@ -328,10 +329,9 @@ public class Simulador {
         }
     }
 
-
-    //Función para calcular la duración del viaje
+    // Función para calcular la duración del viaje
     static String calculoDuracionViaje() {
-        var distanciaEnMillonesDeKm = distancias[planetaSeleccionado] * Math.pow(10,6);
+        var distanciaEnMillonesDeKm = distancias[planetaSeleccionado] * Math.pow(10, 6);
         var segundosPorDia = 86400;
         /*
          * La fórmula para calcular el tiempo de viaje en segundos es
@@ -340,26 +340,31 @@ public class Simulador {
         var tiempoDeViajeEnSegundos = distanciaEnMillonesDeKm / velocidadesMaximas[naveSeleccionada];
         var tiempoDeViajeEnHoras = Math.round(tiempoDeViajeEnSegundos / 3600);
         var tiempoDeViajeEnDias = Math.round(tiempoDeViajeEnSegundos / segundosPorDia);
-        return "La duración estimada del viaje es de: "+  tiempoDeViajeEnHoras + " horas " + "("+tiempoDeViajeEnDias + " días)";
-        
+        return "La duración estimada del viaje es de: " + tiempoDeViajeEnHoras + " horas " + "(" + tiempoDeViajeEnDias
+                + " días)";
+
     }
 
-    //Función para mostrar la información completa del viaje
-    static void informacionCompletaDeViaje()
-    {
+    // Función para mostrar la información completa del viaje
+    static void informacionCompletaDeViaje() {
         System.out.println("\n*****- Información general del viaje -*****\n");
         System.out.printf("Planeta destino: %s\n", planetas[planetaSeleccionado]);
         System.out.printf("Nave Seleccionada: %s\n", naves[naveSeleccionada]);
-        System.out.println(cantidadTanquesOxigeno > 1 ? "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanques": "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanque");
-        System.out.println(cantidadTanquesCombustible > 1 ? "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanques": "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanque");
+        System.out.println(
+                cantidadTanquesOxigeno > 1 ? "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanques"
+                        : "Cantidad de oxígeno seleccionado: " + cantidadTanquesOxigeno + " tanque");
+        System.out.println(cantidadTanquesCombustible > 1
+                ? "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanques"
+                : "Cantidad de combustible seleccionado: " + cantidadTanquesCombustible + " tanque");
         System.out.printf("Cantidad de pasajeros a bordo: %d\n", cantidadPasajerosSeleccionada);
-        System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n", planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
+        System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n",
+                planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
         System.out.println(calculoDuracionViaje());
+        simulacion();
     }
 
-
-    //Función que muestra el menú para gestionar los recursos
-    static void gestionarRecursos(Scanner scanner){
+    // Función que muestra el menú para gestionar los recursos
+    static void gestionarRecursos(Scanner scanner) {
         System.out.println("Seleccione el recurso a gestionar:\n");
         System.out.println("1. Oxígeno");
         System.out.println("2. Combustible");
@@ -373,10 +378,10 @@ public class Simulador {
 
             case 2:
                 gestionarCombustible(scanner);
-            
+
             case 3:
                 muestraMenu(scanner);
-        
+
             default:
                 System.out.println("No has seleccionado una opción válida, vuelve a intentarlo!");
                 gestionarRecursos(scanner);
@@ -384,8 +389,8 @@ public class Simulador {
         }
     }
 
-    //Función que muestra el menú para gestionar el oxígeno
-    static void gestionarOxigeno(Scanner scanner){
+    // Función que muestra el menú para gestionar el oxígeno
+    static void gestionarOxigeno(Scanner scanner) {
         System.out.println("**- Gestionar Oxígeno -**\n");
         System.out.println("Seleccione la cantidad de oxígeno que llevará para este viaje\n");
         System.out.println("1. 1 Tanque");
@@ -410,11 +415,10 @@ public class Simulador {
                 break;
         }
 
-
     }
 
-        //Función que muestra el menú para gestionar el combustible
-    static void gestionarCombustible(Scanner scanner){
+    // Función que muestra el menú para gestionar el combustible
+    static void gestionarCombustible(Scanner scanner) {
         System.out.println("**- Gestionar Combustible -**\n");
         System.out.println("Seleccione la cantidad de combustible que llevará para este viaje");
         System.out.println("1. 1 Tanque");
@@ -440,26 +444,227 @@ public class Simulador {
         }
     }
 
-    //Función que valída que los recursos se hayan seleccionado y inicia la simulación
+    // Función que valída que los recursos se hayan seleccionado y inicia la
+    // simulación
     static void iniciarSimulacion() {
         if (planetaSeleccionado == -1 && naveSeleccionada == -1) {
-            System.out.println("No has seleccionado un planeta ni una nave. Selecciónalos antes de iniciar la simulación.");
+            System.out.println(
+                    "No has seleccionado un planeta ni una nave. Selecciónalos antes de iniciar la simulación.");
         } else if (planetaSeleccionado == -1) {
             System.out.println("No has seleccionado un planeta. Selecciónalo antes de iniciar la simulación.");
         } else if (naveSeleccionada == -1) {
             System.out.println("No has seleccionado una nave. Selecciónala antes de iniciar la simulación.");
         } else if (cantidadPasajerosSeleccionada <= 0) {
-            System.out.println("No has seleccionado la cantidad de pasajeros. Selecciónalos antes de iniciar la simulación.");
-        }else if (cantidadTanquesOxigeno == 0 && cantidadTanquesCombustible == 0){
-            System.out.println("No has seleccionado la cantidad de oxígeno y combustible. Seleccionalos antes de inciar la simulación");
-        }else if(cantidadTanquesOxigeno == 0){
-            System.out.println("No has seleccionado la cantidad de tanques de oxígeno. Seleccionalos antes de inciar la simulación");
-        }else if(cantidadTanquesCombustible == 0){
-            System.out.println("No has seleccionado la cantidad de tanques de combustible. Seleccionalos antes de iniciar la simulación");
-        }
-         else {
+            System.out.println(
+                    "No has seleccionado la cantidad de pasajeros. Selecciónalos antes de iniciar la simulación.");
+        } else if (cantidadTanquesOxigeno == 0 && cantidadTanquesCombustible == 0) {
+            System.out.println(
+                    "No has seleccionado la cantidad de oxígeno y combustible. Seleccionalos antes de inciar la simulación");
+        } else if (cantidadTanquesOxigeno == 0) {
+            System.out.println(
+                    "No has seleccionado la cantidad de tanques de oxígeno. Seleccionalos antes de inciar la simulación");
+        } else if (cantidadTanquesCombustible == 0) {
+            System.out.println(
+                    "No has seleccionado la cantidad de tanques de combustible. Seleccionalos antes de iniciar la simulación");
+        } else {
             informacionCompletaDeViaje();
+            simulacion();
+            
         }
+    }
+
+    static void simulacion() {
+        Scanner scanner = new Scanner(System.in);
+        int oxigeno = 100 * cantidadTanquesOxigeno;
+        int combustible = 100 * cantidadTanquesCombustible;
+        Random random = new Random();
+        int eventoAleatorio = random.nextInt(100);
+        StringBuilder advance = new StringBuilder();
+        char head = '>';
+        char body = '=';
+        advance.append(head);
+
+        switch (planetaSeleccionado) {
+            case 0, 1, 2:
+                for (int i = 0; i <= 100; i++) {
+                    try {
+                        Thread.sleep(100);
+                        pantalla4(i, oxigeno, combustible, advance);
+                        advance.insert(0, body);
+                        Thread.sleep(100);
+                        pantalla3(i, oxigeno, combustible, advance);
+                        Thread.sleep(100);
+                        pantalla2(i, oxigeno, combustible, advance);
+                        Thread.sleep(100);
+                        pantalla1(i, oxigeno, combustible, advance);
+                        oxigeno --;
+                        combustible --;
+
+                        if (oxigeno < -2) {
+                            adicionarTanqueOxigeno(scanner);
+                        } else if (combustible < -2) {
+                            adicionarTanqueCombustible(scanner);
+                        } else if(i == 100){
+                            System.out.println("¡Has llegado al planeta destino!");
+                            scanner.nextLine();
+                        }
+
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+
+            case 3, 4:
+                for (int i = 0; i <= 100; i++) {
+                    try {
+                        Thread.sleep(200);
+                        pantalla4(i, oxigeno, combustible, advance);
+                        advance.insert(0, body);
+                        Thread.sleep(200);
+                        pantalla3(i, oxigeno, combustible, advance);
+                        Thread.sleep(200);
+                        pantalla2(i, oxigeno, combustible, advance);
+                        Thread.sleep(200);
+                        pantalla1(i, oxigeno, combustible, advance);
+                        oxigeno -= 2;
+                        combustible -= 2;
+
+                        if (oxigeno < -2) {
+                            adicionarTanqueOxigeno(scanner);
+                        } else if (combustible < -2) {
+                            adicionarTanqueCombustible(scanner);
+                        } else if (i == 100) {
+                            System.out.println("¡Has llegado al planeta destino!");
+                            scanner.nextLine();
+                        }
+
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+
+            case 5, 6:
+                for (int i = 0; i <= 100; i++) {
+                    try {
+                        Thread.sleep(300);
+                        pantalla1(i, oxigeno, combustible, advance);
+                        Thread.sleep(300);
+                        pantalla2(i, oxigeno, combustible, advance);
+                        Thread.sleep(300);
+                        pantalla3(i, oxigeno, combustible, advance);
+                        Thread.sleep(300);
+                        pantalla4(i, oxigeno, combustible, advance);
+                        oxigeno -= 4;
+                        combustible -= 4;
+
+                        if (oxigeno < -4) {
+                            adicionarTanqueOxigeno(scanner);
+                        } else if (combustible < -4) {
+                            adicionarTanqueCombustible(scanner);
+                        } else if (i == 100) {
+                            System.out.println("¡Has llegado al planeta destino!");
+                            scanner.nextLine();
+                        }
+
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+        }
+
+    }
+
+    static void pantalla1(int porcentaje, int oxigeno, int combustible, StringBuilder advance) {
+        System.out.println("""
+                *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                """ + advance + "\nPorcentaje de avance: " + porcentaje + "% " + "(Oxígeno: " + oxigeno
+                + ") (Combustible: " + combustible + ")");
+    }
+
+    static void pantalla2(int porcentaje, int oxigeno, int combustible, StringBuilder advance) {
+        System.out.println("""
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                      *     *     *     *     *     *     *     *     *     *     *     *     *
+                 """ + advance + "\nPorcentaje de avance: " + porcentaje + "% " + "(Oxígeno: " + oxigeno
+                + ") (Combustible: " + combustible + ")");
+    }
+
+    static void pantalla3(int porcentaje, int oxigeno, int combustible, StringBuilder advance) {
+        System.out.println("""
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *
+                *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                  *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                    *     *     *     *     *     *     *     *     *     *     *     *     *
+                      *     *     *     *     *     *     *     *     *     *     *     *     *
+                """ + advance + "\nPorcentaje de avance: " + porcentaje + "% " + "(Oxígeno: " + oxigeno
+                + ") (Combustible: " + combustible + ")");
+    }
+
+    static void pantalla4(int porcentaje, int oxigeno, int combustible, StringBuilder advance) {
+        System.out.println("""
+                   *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                 *   *     *     *     *     *     *     *     *     *     *     *     *     *
+                       *     *     *     *     *     *     *     *     *     *     *     *     *
+                   *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                     *     *     *     *     *     *     *     *     *     *     *     *     *
+                 *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                   *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                     *     *     *     *     *     *     *     *     *     *     *     *     *
+                 *    *     *     *     *     *     *     *     *     *     *     *     *     *
+                   *     *     *     *     *     *     *     *     *     *     *     *     *     *
+                     *     *     *     *     *     *     *     *     *     *     *     *     *
+                       *     *     *     *     *     *     *     *     *     *     *     *     *
+                """ + advance + "\nPorcentaje de avance: " + porcentaje + "% " + "(Oxígeno: " + oxigeno
+                + ") (Combustible: " + combustible + ")");
+    }
+
+    static void adicionarTanqueOxigeno(Scanner scanner) {
+        System.out.println("Oxígeno bajo, ¿desea utilizar el siguiente tanque?");
+        scanner.nextLine();
+    }
+
+    static void adicionarTanqueCombustible(Scanner scanner) {
+        System.out.println("Combustible bajo, ¿desea utilizar el siguiente tanque?");
+        scanner.nextLine();
+    }
+
+    static void lluviaAsteroides() {
+
+    }
+
+    static void falloSistema() {
+        // ToDo
     }
 
 }
