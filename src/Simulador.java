@@ -362,6 +362,7 @@ public class Simulador {
         System.out.printf("Distancia desde la tierra hasta %s es de: %.0f millones de Kilómetros\n",
                 planetas[planetaSeleccionado], distancias[planetaSeleccionado]);
         System.out.println(calculoDuracionViaje());
+        System.out.println("\nPresione una tecla para continuar...");
     }
 
     // Función que muestra el menú para gestionar los recursos
@@ -452,7 +453,7 @@ public class Simulador {
         if (planetaSeleccionado == -1 && naveSeleccionada == -1) {
             System.out.println(
                     "No has seleccionado un planeta ni una nave. Selecciónalos antes de iniciar la simulación.");
-                    scanner.nextLine();
+            scanner.nextLine();
         } else if (planetaSeleccionado == -1) {
             System.out.println("No has seleccionado un planeta. Selecciónalo antes de iniciar la simulación.");
             scanner.nextLine();
@@ -462,20 +463,21 @@ public class Simulador {
         } else if (cantidadPasajerosSeleccionada <= 0) {
             System.out.println(
                     "No has seleccionado la cantidad de pasajeros. Selecciónalos antes de iniciar la simulación.");
-                    scanner.nextLine();
+            scanner.nextLine();
         } else if (cantidadTanquesOxigeno == 0 && cantidadTanquesCombustible == 0) {
             System.out.println(
                     "No has seleccionado la cantidad de oxígeno y combustible. Seleccionalos antes de inciar la simulación");
-                    scanner.nextLine();
+            scanner.nextLine();
         } else if (cantidadTanquesOxigeno == 0) {
             System.out.println(
                     "No has seleccionado la cantidad de tanques de oxígeno. Seleccionalos antes de inciar la simulación");
-                    scanner.nextLine();
+            scanner.nextLine();
         } else if (cantidadTanquesCombustible == 0) {
             System.out.println(
                     "No has seleccionado la cantidad de tanques de combustible. Seleccionalos antes de iniciar la simulación");
-                    scanner.nextLine();
+            scanner.nextLine();
         } else {
+
             informacionCompletaDeViaje();
             scanner.nextLine();
             simulacion();
@@ -486,7 +488,8 @@ public class Simulador {
     static void simulacion() {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        int eventoAleatorio = random.nextInt(100);
+        int eventoAleatorio1 = random.nextInt(100);
+        int eventoAleatorio2 = random.nextInt(100);
         StringBuilder advance = new StringBuilder();
         char head = '>';
         char body = '=';
@@ -538,9 +541,16 @@ public class Simulador {
                             adicionarTanqueOxigeno(scanner);
                         } else if (combustible < -2) {
                             adicionarTanqueCombustible(scanner);
+                        } else if (eventoAleatorio1 == i) {
+                            lluviaAsteroides(scanner);
+                        } else if (eventoAleatorio2 == i) {
+                            falloSistema(scanner);
                         } else if (i == 100) {
-                            System.out.println("¡Has llegado al planeta destino!");
+                            System.out.println("\n¡Has llegado al planeta destino!");
+                            oxigeno = 100;
+                            combustible = 100;
                             scanner.nextLine();
+                            muestraMenu(scanner);
                         }
 
                     } catch (InterruptedException e) {
@@ -568,9 +578,16 @@ public class Simulador {
                             adicionarTanqueOxigeno(scanner);
                         } else if (combustible < -2) {
                             adicionarTanqueCombustible(scanner);
-                        } else if (i == 100) {
-                            System.out.println("¡Has llegado al planeta destino!");
+                        } else if (eventoAleatorio1 == i) {
+                            lluviaAsteroides(scanner);
+                        } else if (eventoAleatorio2 == i) {
+                                falloSistema(scanner);
+                            } else if (i == 100) {
+                            System.out.println("\n¡Has llegado al planeta destino!");
+                            oxigeno = 100;
+                            combustible = 100;
                             scanner.nextLine();
+                            muestraMenu(scanner);
                         }
 
                     } catch (InterruptedException e) {
@@ -600,8 +617,14 @@ public class Simulador {
                         } else if (combustible < 0) {
                             cantidadTanquesCombustible -= 1;
                             adicionarTanqueCombustible(scanner);
+                        } else if (eventoAleatorio1 == i) {
+                            lluviaAsteroides(scanner);
+                        } else if (eventoAleatorio2 == i) {
+                                falloSistema(scanner);
                         } else if (i == 100) {
-                            System.out.println("¡Has llegado al planeta destino!");
+                            System.out.println("\n¡Has llegado al planeta destino!");
+                            oxigeno = 100;
+                            combustible = 100;
                             scanner.nextLine();
                             muestraMenu(scanner);
                         }
@@ -702,9 +725,11 @@ public class Simulador {
                     scanner.nextLine();
                     oxigeno = 100;
 
-                }else{
+                } else {
                     System.out.println("No tienes más tanques de oxígeno, el viaje no se pudo completar...");
                     scanner.nextLine();
+                    oxigeno = 100;
+                    combustible = 100;
                     muestraMenu(scanner);
                 }
                 break;
@@ -712,6 +737,8 @@ public class Simulador {
             case "2":
                 System.out.println("No tienes más tanques de oxígeno, el viaje no se pudo completar...");
                 scanner.nextLine();
+                oxigeno = 100;
+                combustible = 100;
                 muestraMenu(scanner);
                 break;
             default:
@@ -734,11 +761,14 @@ public class Simulador {
                     System.out.println("¡Se ha conectado otro tanque de combustible!");
                     System.out.printf("Tanques de combustible restantes: %d", cantidadTanquesCombustible);
                     scanner.nextLine();
+                    oxigeno = 100;
                     combustible = 100;
 
                 } else {
                     System.out.println("No tienes más tanques de combustible, el viaje no se pudo completar...");
                     scanner.nextLine();
+                    oxigeno = 100;
+                    combustible = 100;
                     muestraMenu(scanner);
                 }
                 break;
@@ -746,6 +776,8 @@ public class Simulador {
             case "2":
                 System.out.println("No tienes más tanques de combustible, el viaje no se pudo completar...");
                 scanner.nextLine();
+                oxigeno = 100;
+                combustible = 100;
                 muestraMenu(scanner);
                 break;
             default:
@@ -755,12 +787,65 @@ public class Simulador {
         }
     }
 
-    static void lluviaAsteroides() {
+    static void lluviaAsteroides(Scanner scanner) {
+        String opcion = "";
+        System.out.println("Estás cerca a una lluvia de asteroides");
+        System.out.println("Que quieres hacer?");
+        System.out.println("1. Realizar un desvío");
+        System.out.println("2. Seguir el rumbo normal");
+        opcion = scanner.nextLine();
+
+        switch (opcion) {
+            case "1":
+                System.out.println("\nHas esquivado la lluvia de asteroides con éxito!");
+                scanner.nextLine();
+                break;
+            case "2":
+                System.out.println(
+                        "\nLa nave ha colisionado contra los asteroides sufriendo irreparables daños, el viaje no se pudo completar...");
+                scanner.nextLine();
+                oxigeno = 100;
+                combustible = 100;
+                muestraMenu(scanner);
+                break;
+
+            default:
+                System.out.println("Opción inválida!");
+                scanner.nextLine();
+                lluviaAsteroides(scanner);
+                break;
+        }
 
     }
 
-    static void falloSistema() {
-        // ToDo
+    static void falloSistema(Scanner scanner) {
+        String opcion = "";
+        System.out.println("El sistema de navegación está presentando un fallo:");
+        System.out.println("Que quieres hacer?");
+        System.out.println("1. Reparar el sistema");
+        System.out.println("2. No reparar el sistema");
+        opcion = scanner.nextLine();
+
+        switch (opcion) {
+            case "1":
+                System.out.println("\nHas reparado el sistema de navegación con éxito!");
+                scanner.nextLine();
+                break;
+            case "2":
+                System.out.println(
+                        "\nNo reparaste el sistema y la nave tomó un rumbo inesperado!, el viaje no se pudo completar...");
+                scanner.nextLine();
+                oxigeno = 100;
+                combustible = 100;
+                muestraMenu(scanner);
+                break;
+
+            default:
+                System.out.println("Opción inválida!");
+                scanner.nextLine();
+                lluviaAsteroides(scanner);
+                break;
+        }
     }
 
 }
