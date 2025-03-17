@@ -39,3 +39,6 @@ El usuario participa activamente en la simulación, eligiendo su nave y destino,
 - Administración de recursos esenciales como combustible, oxígeno y energía.  
 - Eventos dinámicos que afectan el transcurso de la misión.  
 - Toma de decisiones con impacto en el éxito del viaje.  
+
+## 👨‍💻 Hecho por
+Miguel Olarte y Andrés Garzón
